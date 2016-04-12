@@ -140,3 +140,11 @@ p{
     /*border-style:dotted;*/
     stroke-width: 30 px;
 }
+
+.legendRed,.legendBlue {
+    /*stroke: red;*/
+    opacity: 0.3;
+    /*border-style:dotted;*/
+    /*stroke-width: 30 px;*/
+}
+

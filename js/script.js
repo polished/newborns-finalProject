@@ -58,6 +58,8 @@ queue()
 function dataLoaded(err,data) {
 
     var densityPlotModule = d3.densityPlot()
+        .variable0("married")
+        .variable1("single")
         .width(width/2).height(height/5);
     //    .value(data);
 
@@ -78,6 +80,8 @@ function dataLoaded(err,data) {
 function dataLoaded1(err,data) {
 
     var densityPlotModule = d3.densityPlot()
+        .variable0("white")
+        .variable1("black")
         .width(width/2).height(height/5);
     //    .value(data);
 
@@ -98,6 +102,8 @@ function dataLoaded1(err,data) {
 function dataLoaded2(err,data) {
 
     var densityPlotModule = d3.densityPlot()
+        .variable0("college grad")
+        .variable1("not college grad")
         .width(width/2).height(height/5);
     //    .value(data);
 

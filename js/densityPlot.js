@@ -9,6 +9,8 @@ d3.densityPlot = function(){
         //layout = d3.layout.histogram(),
         chartW = w - m.l - m.r,
         chartH = h - m.t - m.b;
+    var variable0 = "";
+    var variable1 = "";
 
     var scaleX = d3.scale.linear()
         .domain([0, 5000])
@@ -74,6 +76,44 @@ d3.densityPlot = function(){
             .attr("x1", scaleX(estimate1))
             .attr("x2", scaleX(estimate1));
 
+        legend = plot_main.append("g")
+            .attr("class","legend")
+            .attr("transform","translate(50,30)")
+            .style("font-size","12px");
+
+        legend
+            .append("rect")
+            .attr("class","legendRed")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", chartW/50)
+            .attr("height", chartW/50)
+            .attr("fill", "red");
+
+        legend
+            .append("rect")
+            .attr("class","legendBlue")
+            .attr("x", 0)
+            .attr("y", 15)
+            .attr("width", chartW/50)
+            .attr("height", chartW/50)
+            .attr("fill", "blue");
+
+        legend
+            .append("text")
+            .attr("x", 15)
+            .attr("y", 8)
+            .text(variable0);
+
+        legend
+            .append("text")
+            .attr("x", 15)
+            .attr("y", 23)
+            .text(variable1);
+
+        legend
+            .attr("transform","translate(400,-10)");
+
         var axisX = d3.svg.axis()
             .orient('bottom')
             .scale(scaleX);
@@ -119,12 +159,18 @@ d3.densityPlot = function(){
     //    maxY = _y;
     //    return this;
     //}
-    //exports.binSize = function(_b){
-    //    //@param _b: d3.time.interval
-    //    if(!arguments.length) return binSize;
-    //    binSize = _b;
-    //    return this;
-    //}
+    exports.variable0 = function(_b){
+        //@param _b: d3.time.interval
+        if(!arguments.length) return variable0;
+        variable0 = _b;
+        return this;
+    }
+    exports.variable1 = function(_d){
+        //@param _b: d3.time.interval
+        if(!arguments.length) return variable1;
+        variable1 = _d;
+        return this;
+    }
 
     return exports;
 }
