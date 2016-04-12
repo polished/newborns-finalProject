@@ -3,108 +3,126 @@ var margin = {t: 20, r: 20, b: 20, l: 20};
 var width = document.getElementById('plot').clientWidth - margin.l - margin.r,
     height = document.getElementById('plot').clientHeight - margin.t - margin.b;
 
-var plot = d3.select('.canvas')
+var plot = d3.select('.canvas').select('.chart1')
+//var plot = d3.select('.canvas')
     .append('svg')
+    .attr('class', 'svg')
     .attr('width', width + margin.l + margin.r)
-    .attr('height', height + margin.t + margin.b)
+    .attr('height', height/5 + margin.t + margin.b)
     .append('g')
     .attr('class', 'plot')
     .attr('transform', 'translate(' + margin.l + ',' + margin.t + ')');
 
-//var circle = plot.append("circle")
-//    .attr("cx", 30)
-//    .attr("cy", 30)
-//    .attr("r", 20);
+var plot2 = d3.select('.canvas').select('.chart2')
+    //var plot = d3.select('.canvas')
+    .append('svg')
+    .attr('class', 'svg')
+    .attr('width', width + margin.l + margin.r)
+    .attr('height', height/5 + margin.t + margin.b)
+    .append('g')
+    .attr('class', 'plot2')
+    .attr('transform', 'translate(' + margin.l + ',' + margin.t + ')');
 
-var plot_main = plot.append('g');
+
+var plot3 = d3.select('.canvas').select('.chart3')
+    //var plot = d3.select('.canvas')
+    .append('svg')
+    .attr('class', 'svg')
+    .attr('width', width + margin.l + margin.r)
+    .attr('height', height/5 + margin.t + margin.b)
+    .append('g')
+    .attr('class', 'plot3')
+    .attr('transform', 'translate(' + margin.l + ',' + margin.t + ')');
+
+//var plot2 = d3.select('.svg')
+//    .append('g')
+//    .attr('class', 'plot2')
+//    .attr('transform', 'translate(' + margin.l + ',' + margin.t + ')');
+
+//var plotReady = plot;
 
 queue()
-    .defer(d3.csv, 'data.csv', parse)
-    .await(dataLoaded);
+    .defer(d3.csv, 'densitySingle.csv', parse, dataLoaded)
+    .defer(d3.csv, 'densityBlack.csv', parse, dataLoaded1)
+    .defer(d3.csv, 'densityNoCollege.csv', parse, dataLoaded2);
+    //.defer(d3.csv, 'densityMedicaid.csv', parse)
+    //.defer(d3.csv, 'densityNoPrecare.csv', parse)
+    //.defer(d3.csv, 'densityTeen.csv', parse)
+    //.defer(d3.csv, 'densityWic.csv', parse)
+    //.defer(d3.csv, 'densitySingle.csv', parse)
+    //.defer(d3.csv, 'densityMarried.csv', parse)
+
+    //.await(dataLoaded);
+//.await(draw);
+
+function dataLoaded(err,data) {
+
+    var densityPlotModule = d3.densityPlot()
+        .width(width/2).height(height/5);
+    //    .value(data);
+
+    //plotReady = plot
+    plotReady = d3.select('.plot')
+        .datum(data)
+        .call(densityPlotModule);
+
+    //plotReady2 = d3.select('.plot2')
+    //    .datum(data)
+    //    .call(densityPlotModule);
+    //
+    //plotReady3 = d3.select('.plot3')
+    //    .datum(data)
+    //    .call(densityPlotModule);
+ }
+
+function dataLoaded1(err,data) {
+
+    var densityPlotModule = d3.densityPlot()
+        .width(width/2).height(height/5);
+    //    .value(data);
+
+    //plotReady = plot
+    //plotReady = d3.select('.plot')
+    //    .datum(data)
+    //    .call(densityPlotModule);
+
+    plotReady2 = d3.select('.plot2')
+        .datum(data)
+        .call(densityPlotModule);
+
+    //plotReady3 = d3.select('.plot3')
+    //    .datum(data)
+    //    .call(densityPlotModule);
+ }
+
+function dataLoaded2(err,data) {
+
+    var densityPlotModule = d3.densityPlot()
+        .width(width/2).height(height/5);
+    //    .value(data);
+
+    //plotReady = plot
+    //plotReady = d3.select('.plot')
+    //    .datum(data)
+    //    .call(densityPlotModule);
+
+    //plotReady2 = d3.select('.plot2')
+    //    .datum(data)
+    //    .call(densityPlotModule);
+
+    plotReady3 = d3.select('.plot3')
+        .datum(data)
+        .call(densityPlotModule);
+}
 
 function parse(d) {
+    estimate0 = +d.estimate0;
+    estimate1 = +d.estimate1;
 
     return {
-
-        number: d.number - 1,
-        visible: +d.visible
+        x0: +d.x0,
+        y0: +d.y0,
+        x1: +d.x1,
+        y1: +d.y1
     }
 }
-function dataLoaded(error, data) {
-
-    console.log(data);
-    draw(data);
-}
-
-function draw(_data) {
-
-
-    var nodes = plot_main.selectAll('.circles-data-point').data(_data);
-
-    //enter
-    var node_enter = nodes.enter().append('circle').attr('class', 'circles-data-point')
-        .style('fill-opacity', '0.5')
-        .attr('cx', function (d) {
-            return 25 + Math.random() * 50
-        })
-        .attr('cy', -50);
-    // transitions
-    nodes
-        .attr('fill', "black")
-        .attr('cx', function (d) {
-            return (d.number % 10) * 10
-        })
-        .transition()
-        .delay(function (d) {
-            return d.number * 75
-        })
-        .duration(function (d) {
-            return (200 - d.number * 0.5)
-        })
-        .attr('cy', function (d) {
-            return 200 - 10 * Math.floor(d.number / 10)
-        })
-
-        .attr('r', 5)
-        .style('fill-opacity', function (d) {
-            if (d.visible == 1) {
-                customOpacity = 1
-            } else {
-                customOpacity = 0.5
-            }
-            return customOpacity
-        });
-    //exit
-    var node_exit = nodes.exit().remove();
-}
-
-
-//Scales
-
-// Set up scales
-
-//var scaleX = d3.scale.linear().domain([0, 1000]).range([0, width]),
-//    scaleY = d3.scale.linear().range([height, 0]).domain([0, 1000]);
-//
-//
-////Axis
-//var axisX = d3.svg.axis()
-//    .orient('bottom')
-//    .scale(scaleX);
-//
-//
-//var axisY = d3.svg.axis()
-//    .orient('right')
-//    .tickSize(width);
-//
-//axisY.scale(scaleY);
-
-//Draw axes
-//plot.append('g').attr('class', 'axis axis-x')
-//    .attr('transform', 'translate(0,' + height + ')')
-//    .call(axisX);
-//
-//plot.append('g').attr('class', 'axis axis-y')
-//    .call(axisY);
-
-

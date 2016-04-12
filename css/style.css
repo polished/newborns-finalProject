@@ -97,3 +97,46 @@ p{
 }.dataValue {
     font-weight: bold
 }
+
+.bar {
+    fill: #bbb;
+    shape-rendering: crispEdges;
+}
+
+.line {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1.5 px;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.y.axis path {
+    display: none;
+}
+.area0 {
+    fill: red;
+    opacity: 0.3;
+}
+.area1 {
+    fill: blue;
+    opacity: 0.3;
+}
+
+.line1 {
+    stroke: blue;
+    opacity: 0.3;
+    /*border-style:dotted;*/
+    stroke-width: 30 px;
+}
+.line0 {
+    stroke: red;
+    opacity: 0.3;
+    /*border-style:dotted;*/
+    stroke-width: 30 px;
+}
